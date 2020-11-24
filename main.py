@@ -1,36 +1,17 @@
 import datetime
-
-from flask import Flask, render_template, request
-from flask_restful import Resource, Api
+from pymongo import MongoClient
+from flask import Flask, jsonify, render_template, request
+from flask_restful import Api
 from google.auth.transport import requests
-from google.cloud import datastore
 import google.oauth2.id_token
+from item import Item
 
 firebase_request_adapter = requests.Request()
 
-datastore_client = datastore.Client()
-
 app = Flask(__name__)
 api = Api(app)
-
-
-items = []
-
-
-class Item(Resource):
-    def get(self, name):
-        query = datastore_client.query(kind='item')
-        print(query.fetch())
-        #return query
-
-    def post(self, name):
-        item = datastore.Entity(key=datastore_client.key('item'))
-        item.update({
-            'name': name,
-            'price': 12.00
-        })
-        return item # notifies app that this has happened
-
+        
+#api.add_resource(ItemList, '/items')
 api.add_resource(Item, '/item/<string:name>')
 
 @app.route('/')
