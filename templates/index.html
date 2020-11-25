@@ -2,52 +2,17 @@
 <html>
 <head>
   <title>Datastore and Firebase Auth Example</title>
-  <script src="{{ url_for('static', filename='script.js') }}"></script>
-  <script src="https://www.gstatic.com/firebasejs/ui/4.4.0/firebase-ui-auth.js"></script>
   <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-  <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.4.0/firebase-ui-auth.css" />
 </head>
 <body>
+    <form action='/' method="post">
+      <input type="name" name="name">
+      <input type="password" name="pass">
+      <input type="submit" name="submit">
+    </form>
+    {% if lf %}
+      {{lf}}
+    {% endif %}
 
-    <h1>Datastore and Firebase Auth Example</h1>
-
-    <div id="firebaseui-auth-container"></div>
-    
-    <button id="sign-out" hidden=true>Sign Out</button>
-    
-    <div id="login-info" hidden=true>
-      <h2>Login info:</h2>
-      {% if user_data %}
-        <dl>
-          <dt>Name</dt><dd>{{ user_data['name'] }}</dd>
-          <dt>Email</dt><dd>{{ user_data['email'] }}</dd>
-        </dl>
-      {% elif error_message %}
-        <p>Error: {{ error_message }}</p>
-      {% endif %}
-    </div>
-
-
-<!-- The core Firebase JS SDK is always required and must be listed first -->
-<script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/7.8.0/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-analytics.js"></script>
-<script>
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  var firebaseConfig = {
-    apiKey: "AIzaSyC1lWoEQGssAUgMOGXQPr-BudMpZEQE3xc",
-    authDomain: "nps-demo-app.firebaseapp.com",
-    databaseURL: "https://nps-demo-app.firebaseio.com",
-    projectId: "nps-demo-app",
-    storageBucket: "nps-demo-app.appspot.com",
-    messagingSenderId: "468425812899",
-    appId: "1:468425812899:web:cf670e802f13db00bec816",
-    measurementId: "G-D5W2BRF78P"
-  };
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-  firebase.analytics();
-</script>
 </body>
 </html>

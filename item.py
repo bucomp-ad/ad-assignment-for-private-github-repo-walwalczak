@@ -1,7 +1,5 @@
 from flask import Flask, jsonify, render_template, request
 from flask_restful import Resource, reqparse
-from google.auth.transport import requests
-import google.oauth2.id_token
 from pymongo import MongoClient
 
 
