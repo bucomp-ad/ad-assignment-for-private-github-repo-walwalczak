@@ -1,53 +1,23 @@
-from pymongo import MongoClient
-from flask import Flask, jsonify, render_template, request
-from flask_restful import Api
-import pyrebase
+from flask import Flask, render_template
+from flask_restful import Api, Resource
 from item import Item
+from user import Register, SignIn
+
 
 app = Flask(__name__)
-
-#var firebaseConfig = {
-#    apiKey: "AIzaSyC1lWoEQGssAUgMOGXQPr-BudMpZEQE3xc",
-#    authDomain: "nps-demo-app.firebaseapp.com",
-#    databaseURL: "https://nps-demo-app.firebaseio.com",
-#    projectId: "nps-demo-app",
-#    storageBucket: "nps-demo-app.appspot.com",
-#    messagingSenderId: "468425812899",
-#    appId: "1:468425812899:web:cf670e802f13db00bec816",
-#   measurementId: "G-D5W2BRF78P"
-#  };
-
-
-config = {
-"apiKey": "AIzaSyC1lWoEQGssAUgMOGXQPr-BudMpZEQE3xc",
-"authDomain": "nps-demo-app.firebaseapp.com",
-"databaseURL": "https://nps-demo-app.firebaseio.com",
-"storageBucket": "nps-demo-app.appspot.com"
-}
-
-firebase = pyrebase.initialize_app(config)
-auth = firebase.auth()
-
+app.secret_key = '1234'
 api = Api(app)
+
+
 
 #api.add_resource(ItemList, '/items')
 api.add_resource(Item, '/item/<string:name>')
+api.add_resource(Register, '/register')
+api.add_resource(SignIn, '/signin')
 
-@app.route('/', methods=['GET', 'POST'])
-def root():
-    # auth.create_user_with_email_and_password('email@email.com', 'password')
 
-    login_failed = 'Please check your credentials'
-    
-    if request.method == 'POST':
-        email = request.form['name']
-        password = request.form['pass']
-        try:
-            auth.sign_in_with_email_and_password(email, password)
-            return 'Login successful'
-        except:
-            return render_template('index.html', lf=login_failed)
-        
+@app.route('/')
+def index():
     return render_template('index.html')
 
 if __name__ == '__main__':

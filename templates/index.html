@@ -5,13 +5,17 @@
   <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <form action='/' method="post">
-      <input type="name" name="name">
-      <input type="password" name="pass">
+    <form action='/signin' method="post">
+      <input type="email" name="email">
+      <input type="password" name="password">
       <input type="submit" name="submit">
     </form>
     {% if lf %}
       {{lf}}
+    {% endif %}
+
+    {% if ls %}
+      {{ls}}
     {% endif %}
 
 </body>
