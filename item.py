@@ -1,18 +1,14 @@
 from flask import Flask, jsonify, render_template, request
 from flask_restful import Resource, reqparse
-from google.auth.transport import requests
-import google.oauth2.id_token
-from pymongo import MongoClient
-
+from mongodb import client, db
+from flask_jwt import JWT, jwt_required
+from user import check_token
 
 class Item(Resource):
-
-    client = MongoClient("mongodb+srv://dbAdmin:Password01@cluster0.chzl0.mongodb.net/AdvancedDev?retryWrites=true&w=majority")
-    db = client["AdvancedDev"]
-
-    parser = reqparse.RequestParser() # controls what gets passed in
+    parser = reqparse.RequestParser()
     parser.add_argument('price', type=float, required=True, help="This field is required")
 
+    #@check_token
     def get(self, name):
         item = Item.find_name(name)
         if item:
@@ -21,28 +17,64 @@ class Item(Resource):
 
     @classmethod
     def find_name(cls, name):
-        #client = MongoClient("mongodb+srv://dbAdmin:Password01@cluster0.chzl0.mongodb.net/AdvancedDev?retryWrites=true&w=majority")
-        #db = client["AdvancedDev"]
-        col = Item.db['items']
-
+        col = db['items']
         query_name = col.find_one({"name": name})
 
         if query_name != None:
             return col.find_one({"name": name}, {'_id':0, 'name':1, 'price':1})
-         # return col.find_one({"name": name})
-            
 
     def post(self, name):
-        print(Item.find_name(name))
         if Item.find_name(name):
             return {'message': f"An item with name '{name}' already exists."}, 400
         
         data = Item.parser.parse_args()
         item = {'name': name, 'price': data['price']}
         
-        #client = MongoClient("mongodb+srv://dbAdmin:Password01@cluster0.chzl0.mongodb.net/AdvancedDev?retryWrites=true&w=majority")
-        #db = client["AdvancedDev"]
-        items = Item.db.items
+        items = db.items
         items.insert_one({'name': name, 'price': data['price']})
 
         return item, 201
+
+    def put(self, name):
+        data = Item.parser.parse_args()
+        item = Item.find_name(name)
+
+        if item:
+            updated_item = {'$set' : {'name': name, 'price': data['price']}}
+        
+            items = db.items
+            items.update_one(item, updated_item)
+
+            #get updated item
+            item = Item.find_name(name)
+
+            return item, 201
+        try:
+            item = {'name': name, 'price': data['price']}
+            items = db.items
+            items.insert_one({'name': name, 'price': data['price']})
+        except:
+            return {"message": "Unexpected error ocurred."}, 500
+
+        return item, 201
+
+    def delete(self, name):
+        if not Item.find_name(name):
+            return {'message': 'This item does not exist.'}, 400
+        
+        item = {'name': name}
+        
+        items = db.items
+        items.delete_one({'name': name})
+
+        return {'message': 'Item deleted'}, 201
+
+class ItemList(Resource):
+    def get(self):
+        items = db['items']
+        items_dict = {}
+        items_dict['items'] = []
+        for item in items.find({}, {'_id':0, 'name':1, 'price':1}):
+            items_dict['items'].append(item)
+
+        return items_dict, 201
