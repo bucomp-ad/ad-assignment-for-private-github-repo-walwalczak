@@ -1,8 +1,8 @@
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, jsonify, request
 from flask_restful import Resource, reqparse
 from mongodb import client, db
-from flask_jwt import JWT, jwt_required
-from resources.user import check_token
+from authenticate import check_token
+
 
 class Item(Resource):
     parser = reqparse.RequestParser()
@@ -79,3 +79,5 @@ class ItemList(Resource):
             items_dict['items'].append(item)
 
         return items_dict, 201
+
+

@@ -1,3 +1,5 @@
+'''
+
 from flask_restful import Resource, reqparse
 from flask import Flask, jsonify, render_template, request, make_response
 import pyrebase
@@ -112,3 +114,7 @@ class Register(Resource):
         firebase.auth().send_email_verification(user['idToken'])
 
         return {"message": f"{user['email']} has been registered."}, 201
+
+
+
+'''
