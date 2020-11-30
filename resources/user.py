@@ -62,7 +62,9 @@ class SignIn(Resource):
         user = firebase.auth().sign_in_with_email_and_password(email, password)
         #user = firebase.auth().refresh(user['refreshToken'])
         jwt = jsonify({'token' : user['idToken']})
-        print(jwt)
+        #id_token = request.cookies.get("token")
+        #print(test)
+
         #headers = request.headers.get('authorization')
         #user_auth = auth.verify_id_token(request.headers['authorization'])
         #print(user_auth)
@@ -77,8 +79,11 @@ class SignIn(Resource):
 def check_token(f):
     @wraps(f)
     def wrap(*args,**kwargs):
-        token = request.args.get('token')
-        print(token)
+        #token = request.args.get('token')
+        id_token = request.cookies.get("token")
+
+        print(f"Claims: {id_token}")
+
         if request.headers.get('authorization') == None:
             return {'message': 'No token provided'}, 400
         #print(firebase.auth().user['localId'])
