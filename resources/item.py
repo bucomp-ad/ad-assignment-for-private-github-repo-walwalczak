@@ -4,7 +4,6 @@ from mongodb import client, db
 from authenticate import check_token
 from models.item_model import ItemModel
 
-
 class Item(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument('price', type=float, required=True, help="This field is required")
@@ -48,7 +47,7 @@ class Item(Resource):
         try:
             item = ItemModel(name, data['price'])
             item.insert()
-            
+
             return item.json(), 201
         except:
             return {"message": "Unexpected error ocurred."}, 500

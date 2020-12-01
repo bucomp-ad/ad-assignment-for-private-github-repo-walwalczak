@@ -15,7 +15,7 @@ window.addEventListener('load', function () {
     signInOptions: [
       // Remove any lines corresponding to providers you did not check in
       // the Firebase console.
-      //firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+      firebase.auth.GoogleAuthProvider.PROVIDER_ID,
       firebase.auth.EmailAuthProvider.PROVIDER_ID,
     ],
     // Terms of service url.
