@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request
 from flask_restful import Resource, reqparse
 from mongodb import client, db
 from authenticate import check_token
+from models.item_model import ItemModel
 
 
 class Item(Resource):
@@ -10,55 +11,50 @@ class Item(Resource):
     
     @check_token
     def get(self, name):
-        item = Item.find_name(name)
+        item = ItemModel.find_name(name)
         if item:
-            return item
+            return item.json()
         return {'item': item}, 200 if item else 404
 
-    @classmethod
-    def find_name(cls, name):
-        col = db['items']
-        query_name = col.find_one({"name": name})
-
-        if query_name != None:
-            return col.find_one({"name": name}, {'_id':0, 'name':1, 'price':1})
-
     def post(self, name):
-        data = Item.parser.parse_args()
-        if Item.find_name(name):
+        
+        if ItemModel.find_name(name):
             return {'message': f"An item with name '{name}' already exists."}, 400
+
+        data = Item.parser.parse_args()
+        item = ItemModel(name, data['price'])
+        
         try:
-            item = {'name': name, 'price': data['price']}
-            
-            items = db.items
-            items.insert_one({'name': name, 'price': data['price']})
+            item.insert()
         except:
             return {"message": "Unexpected error ocurred."}, 500
 
-        return item, 201
+        return item.json(), 201
 
     def put(self, name):
         data = Item.parser.parse_args()
-        item = Item.find_name(name)
-        if item:
-            updated_item = {'$set' : {'name': name, 'price': data['price']}}
-        
-            items = db.items
-            items.update_one(item, updated_item)
+        item = ItemModel.find_name(name)
+        updated_item = ItemModel(name, data['price'])
 
-            #get updated item
-            item = Item.find_name(name)
-            return item, 201
+        if item:
+            updated_item = {'$set' : {'name': updated_item.name, 'price': updated_item.price}}
+        
+            items = db['items']
+            items.update_one(item.json(), updated_item)
+
+            # Update variable with new details
+            updated_item = ItemModel.find_name(name)
+            return updated_item.json(), 201
         try:
-            item = {'name': name, 'price': data['price']}
-            items = db.items
-            items.insert_one({'name': name, 'price': data['price']})
-            return item, 201
+            item = ItemModel(name, data['price'])
+            item.insert()
+            
+            return item.json(), 201
         except:
             return {"message": "Unexpected error ocurred."}, 500
 
     def delete(self, name):
-        if not Item.find_name(name):
+        if not ItemModel.find_name(name):
             return {'message': 'This item does not exist.'}, 400
         
         try:
@@ -68,6 +64,7 @@ class Item(Resource):
             return {'message': 'Item deleted'}, 201
         except:
             return {"message": "Unexpected error ocurred."}, 500
+
 
 class ItemList(Resource):
     def get(self):
