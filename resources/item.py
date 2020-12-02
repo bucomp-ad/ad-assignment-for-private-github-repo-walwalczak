@@ -4,6 +4,7 @@ from mongodb import client, db
 from authenticate import check_token
 import requests
 import json
+from bson.json_util import dumps
 
 class Item(Resource):
     parser = reqparse.RequestParser()
@@ -26,17 +27,13 @@ class Item(Resource):
 
     def post(self, name):
         data = Item.parser.parse_args()
-        if Item.find_name(name):
-            return {'message': f"An item with name '{name}' already exists."}, 400
         try:
-            item = {'name': name, 'price': data['price']}
+            url = 'https://europe-west2-nps-demo-app.cloudfunctions.net/post-item'
+            json_data = requests.post(url, json = {'name': name, 'price': data['price']})
+            return json_data.json()
             
-            items = db.items
-            items.insert_one({'name': name, 'price': data['price']})
         except:
             return {"message": "Unexpected error ocurred."}, 500
-
-        return item, 201
 
     def put(self, name):
         data = Item.parser.parse_args()
