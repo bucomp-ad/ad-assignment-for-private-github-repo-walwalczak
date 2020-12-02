@@ -73,29 +73,14 @@ class Item(Resource):
             return {"message": "Unexpected error ocurred."}, 500
 
 class ItemList(Resource):
-    #def get(self):
-        #pass
-        #items = db['items']
-        #items_dict = {}
-        #items_dict['items'] = []
-
-        #for item in items.find({}, {'_id':0, 'name':1, 'price':1}):
-        #    items_dict['items'].append(item)
-
-        #return items_dict, 201
+    @check_token
     def get(self):
-        request_json = request.get_json(silent=True)
-        request_args = request.args
+        try:
+            url = 'https://europe-west2-nps-demo-app.cloudfunctions.net/item-list'
+            json_data = requests.get(url).json()
+            return json_data, 201
+        except:
+            return {"message": "Unexpected error ocurred."}, 500
 
-        if(request_json and 'source' in request_json):
 
-            meshSource = request_json['source']
-        else:
-            meshSource = request.args.get("source")
         
-        url = 'https://europe-west2-nps-demo-app.cloudfunctions.net/services_get_item_list'
-
-        json_data = requests.get(url).content
-        print(json_data)
-
-        return {'message':'hi'}
