@@ -10,7 +10,6 @@ def check_token(f):
         id_token = request.cookies.get("token")
         error_message = None
         claims = None
-        #token = request.args.get('token')
         id_token = request.cookies.get("token")
 
         if id_token == None:

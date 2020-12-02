@@ -1,5 +1,3 @@
-'use strict';
-
 window.addEventListener('load', function () {
   
   // [START gae_python38_auth_signout]

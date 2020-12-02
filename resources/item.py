@@ -2,6 +2,8 @@ from flask import Flask, jsonify, request
 from flask_restful import Resource, reqparse
 from mongodb import client, db
 from authenticate import check_token
+import requests
+import json
 
 class Item(Resource):
     parser = reqparse.RequestParser()
@@ -49,17 +51,12 @@ class Item(Resource):
             item = Item.find_name(name)
             return item, 201
         try:
-<<<<<<< HEAD
-            item = ItemModel(name, data['price'])
-            item.insert()
 
-            return item.json(), 201
-=======
             item = {'name': name, 'price': data['price']}
             items = db.items
             items.insert_one({'name': name, 'price': data['price']})
             return item, 201
->>>>>>> parent of e464242... Item model methods added
+
         except:
             return {"message": "Unexpected error ocurred."}, 500
 
@@ -76,14 +73,29 @@ class Item(Resource):
             return {"message": "Unexpected error ocurred."}, 500
 
 class ItemList(Resource):
+    #def get(self):
+        #pass
+        #items = db['items']
+        #items_dict = {}
+        #items_dict['items'] = []
+
+        #for item in items.find({}, {'_id':0, 'name':1, 'price':1}):
+        #    items_dict['items'].append(item)
+
+        #return items_dict, 201
     def get(self):
-        items = db['items']
-        items_dict = {}
-        items_dict['items'] = []
+        request_json = request.get_json(silent=True)
+        request_args = request.args
 
-        for item in items.find({}, {'_id':0, 'name':1, 'price':1}):
-            items_dict['items'].append(item)
+        if(request_json and 'source' in request_json):
 
-        return items_dict, 201
+            meshSource = request_json['source']
+        else:
+            meshSource = request.args.get("source")
+        
+        url = 'https://europe-west2-nps-demo-app.cloudfunctions.net/services_get_item_list'
 
+        json_data = requests.get(url).content
+        print(json_data)
 
+        return {'message':'hi'}
