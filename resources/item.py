@@ -1,8 +1,9 @@
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, jsonify, request
 from flask_restful import Resource, reqparse
 from mongodb import client, db
-from flask_jwt import JWT, jwt_required
-from resources.user import check_token
+from authenticate import check_token
+import requests
+import json
 
 class Item(Resource):
     parser = reqparse.RequestParser()
@@ -50,10 +51,12 @@ class Item(Resource):
             item = Item.find_name(name)
             return item, 201
         try:
+
             item = {'name': name, 'price': data['price']}
             items = db.items
             items.insert_one({'name': name, 'price': data['price']})
             return item, 201
+
         except:
             return {"message": "Unexpected error ocurred."}, 500
 
@@ -70,12 +73,14 @@ class Item(Resource):
             return {"message": "Unexpected error ocurred."}, 500
 
 class ItemList(Resource):
+    @check_token
     def get(self):
-        items = db['items']
-        items_dict = {}
-        items_dict['items'] = []
+        try:
+            url = 'https://europe-west2-nps-demo-app.cloudfunctions.net/item-list'
+            json_data = requests.get(url).json()
+            return json_data, 201
+        except:
+            return {"message": "Unexpected error ocurred."}, 500
 
-        for item in items.find({}, {'_id':0, 'name':1, 'price':1}):
-            items_dict['items'].append(item)
 
-        return items_dict, 201
+        
