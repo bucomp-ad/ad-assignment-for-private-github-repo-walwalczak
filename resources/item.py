@@ -13,9 +13,12 @@ class Item(Resource):
     @check_token
     def get(self, name):
         item = Item.find_name(name)
-        if item:
-            return item
-        return {'item': item}, 200 if item else 404
+        try:
+            url = f'https://europe-west2-nps-demo-app.cloudfunctions.net/get-item/{name}'
+            json_data = requests.get(url).json()
+            return json_data, 201
+        except:
+            return {"message": "Unexpected error ocurred."}, 500
 
     @classmethod
     def find_name(cls, name):
@@ -30,8 +33,7 @@ class Item(Resource):
         try:
             url = 'https://europe-west2-nps-demo-app.cloudfunctions.net/post-item'
             json_data = requests.post(url, json = {'name': name, 'price': data['price']})
-            return json_data.json()
-            
+            return json_data.json() 
         except:
             return {"message": "Unexpected error ocurred."}, 500
 
