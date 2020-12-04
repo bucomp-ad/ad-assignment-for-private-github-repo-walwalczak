@@ -10,7 +10,6 @@ class Item(Resource):
     
     @check_token
     def get(self, name):
-        item = Item.find_name(name)
         try:
             url = f'https://europe-west2-nps-demo-app.cloudfunctions.net/get-item/{name}'
             json_data = requests.get(url).json()
@@ -18,6 +17,7 @@ class Item(Resource):
         except:
             return {"message": "Unexpected error ocurred."}, 500
 
+    @check_token
     def post(self, name):
         data = Item.parser.parse_args()
         try:
@@ -27,6 +27,7 @@ class Item(Resource):
         except:
             return {"message": "Unexpected error ocurred."}, 500
 
+    @check_token
     def put(self, name):
         data = Item.parser.parse_args()
         try:
@@ -35,16 +36,13 @@ class Item(Resource):
             return json_data.json() 
         except:
             return {"message": "Unexpected error ocurred."}, 500
-
+    
+    @check_token
     def delete(self, name):
-        if not Item.find_name(name):
-            return {'message': 'This item does not exist.'}, 400
-        
         try:
-            item = {'name': name}
-            items = db.items
-            items.delete_one({'name': name})
-            return {'message': 'Item deleted'}, 201
+            url = f'https://europe-west2-nps-demo-app.cloudfunctions.net/delete-item/{name}'
+            json_data = requests.get(url).json()
+            return json_data, 201
         except:
             return {"message": "Unexpected error ocurred."}, 500
 
