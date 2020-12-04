@@ -10,7 +10,6 @@ def check_token(f):
         id_token = request.cookies.get("token")
         error_message = None
         claims = None
-        id_token = request.cookies.get("token")
 
         if id_token == None:
             return {'message': 'No token provided'}, 400

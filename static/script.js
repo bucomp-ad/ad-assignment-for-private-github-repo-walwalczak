@@ -24,16 +24,23 @@ window.addEventListener('load', function () {
   // [START gae_python38_auth_request]
   firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
+
+      var displayName = user.displayName;
+      var email = user.email;
+      var emailVerified = user.emailVerified;
+      var photoURL = user.photoURL;
+      var uid = user.uid;
+      var phoneNumber = user.phoneNumber;
+      var providerData = user.providerData;
+
       // User is signed in, so display the "sign out" button and login info.
       document.getElementById('sign-out').hidden = false;
-      document.getElementById('login-info').hidden = false;
+
       console.log(`Signed in as ${user.displayName} (${user.email})`);
+      $('#login-info').html(`Signed in as ${displayName} (${email})`)
+    
       user.getIdToken().then(function (token) {
-        // Add the token to the browser's cookies. The server will then be
-        // able to verify the token against the API.
-        // SECURITY NOTE: As cookies can easily be modified, only put the
-        // token (which is verified server-side) in a cookie; do not add other
-        // user information.
+
         document.cookie = "token=" + token;
       });
     } else {
@@ -54,3 +61,4 @@ window.addEventListener('load', function () {
   });
   // [END gae_python38_auth_request]
 });
+
