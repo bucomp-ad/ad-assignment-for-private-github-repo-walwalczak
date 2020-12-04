@@ -5,6 +5,8 @@
   <script src="https://www.gstatic.com/firebasejs/7.18.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/7.8.0/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/7.18.0/firebase-analytics.js"></script>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+  <script src="https://www.gstatic.com/firebasejs/ui/4.5.0/firebase-ui-auth.js"></script>
 
 <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.5.0/firebase-ui-auth.css">
@@ -15,18 +17,18 @@
 <body>
 {% include "navigation.html" ignore missing %}
 <!--end of Navigation bar-->
-  <h1>Upload File</h1>
 
   <div id="firebaseui-auth-container"></div>
-  
-  <button id="sign-out" hidden=true>Sign Out</button>
-  
 
-    <div class="mainDiv" align="right">
-      <h1 align="left">Firebase File Upload</h1>
-      <progress id="uploader" value="0" max="100">0%</progress>
-      <input type="file" id="fileButton" value="upload"/>
-    </div>
+    <div class="card" style="width: 36rem; margin:auto">
+        <div class="card-header">
+            <h5 class="card-title text-center">Firebase File Upload</h5>
+          </div>
+        <div class="card-body">
+          <h6 class="card-subtitle mb-2 text-muted"><progress id="uploader" value="0" max="100">0%</progress></h6>
+          <p class="card-text"><input type="file" id="fileButton" value="upload" class="btn"/></p>
+        </div>
+      </div>
 
    <script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-storage.js"></script>       
 

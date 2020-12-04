@@ -2,6 +2,7 @@ window.addEventListener('load', function () {
   
   // [START gae_python38_auth_signout]
   document.getElementById('sign-out').onclick = function () {
+    window.location.href='/';
     firebase.auth().signOut();
   };
   // [END gae_python38_auth_signout]
@@ -46,6 +47,7 @@ window.addEventListener('load', function () {
     } else {
       // User is signed out.
       // Initialize the FirebaseUI Widget using Firebase.
+
       var ui = new firebaseui.auth.AuthUI(firebase.auth());
       // Show the Firebase login button.
       ui.start('#firebaseui-auth-container', uiConfig);

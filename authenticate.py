@@ -1,6 +1,6 @@
 from google.auth.transport import requests
 import google.oauth2.id_token
-from flask import request
+from flask import request, redirect
 from functools import wraps
 
 def check_token(f):
