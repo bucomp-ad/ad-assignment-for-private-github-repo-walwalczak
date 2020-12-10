@@ -7,3 +7,4 @@ Flask-JWT==0.3.2
 firebase_admin==4.4.0
 google-auth==1.23.0
 requests==2.25.0
+Jinja2==2.11.2

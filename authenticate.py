@@ -1,6 +1,6 @@
 from google.auth.transport import requests
 import google.oauth2.id_token
-from flask import request
+from flask import request, redirect
 from functools import wraps
 
 def check_token(f):
@@ -10,7 +10,6 @@ def check_token(f):
         id_token = request.cookies.get("token")
         error_message = None
         claims = None
-        id_token = request.cookies.get("token")
 
         if id_token == None:
             return {'message': 'No token provided'}, 400
