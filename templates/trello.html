@@ -7,6 +7,7 @@
   <script src="https://www.gstatic.com/firebasejs/7.18.0/firebase-analytics.js"></script>
   <script src="{{ url_for('static', filename='script.js') }}"></script>
   <script src="https://www.gstatic.com/firebasejs/ui/4.5.0/firebase-ui-auth.js"></script>
+  <script src="https://code.jquery.com/jquery-3.x-git.min.js"></script>
 
 <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.5.0/firebase-ui-auth.css">
@@ -20,11 +21,18 @@
 
     <div class="card" style="width: 36rem; margin:auto">
         <div class="card-header">
-            <h5 class="card-title text-center">Firebase File Upload</h5>
+            <h5 class="card-title text-center">Create a board</h5>
           </div>
         <div class="card-body">
-          <h6 class="card-subtitle mb-2 text-muted"><progress id="uploader" value="0" max="100">0%</progress></h6>
-          <p class="card-text"><input type="file" id="fileButton" value="upload" class="btn"/></p>
+            <form>
+                <div class="row">
+                  <div class="col">
+                    <input type="text" class="form-control" placeholder="Board Name" id="board-name-input">
+                  </div>
+                  <button type="submit" class="btn btn-primary" id="submit">Submit</button>
+                  <div id="response"></div>
+                </div>
+              </form>
         </div>
       </div>
 
@@ -49,9 +57,8 @@
    // Get a reference to the storage service, which is used to create references in your storage bucket
    //var storage = firebase.storage();
 </script>
-<script src="{{ url_for('static', filename='upload.js') }}"></script>
+<script src="{{ url_for('static', filename='trelloboard.js') }}"></script>
 <!-- Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
