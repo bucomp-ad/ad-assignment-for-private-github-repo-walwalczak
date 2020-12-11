@@ -33,9 +33,14 @@ window.addEventListener('load', function () {
       var uid = user.uid;
       var phoneNumber = user.phoneNumber;
       var providerData = user.providerData;
+      let itemCards = document.getElementById('item-cards')
 
       // User is signed in, so display the "sign out" button and login info.
       document.getElementById('sign-out').hidden = false;
+
+      if (itemCards) {
+        itemCards.hidden = false;
+      }
 
       console.log(`Signed in as ${user.displayName} (${user.email})`);
       $('#login-info').html(`Signed in as ${displayName} (${email})`)
@@ -54,6 +59,9 @@ window.addEventListener('load', function () {
       // Update the login state indicators.
       document.getElementById('sign-out').hidden = true;
       document.getElementById('login-info').hidden = true;
+      if (itemCards){
+        itemCards.hidden = true;
+      }
       // Clear the token cookie.
       document.cookie = "token=";
     }

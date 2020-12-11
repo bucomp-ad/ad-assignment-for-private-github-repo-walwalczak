@@ -30,7 +30,8 @@ fileButton.addEventListener('change', function(e){
     alert("File upload successful");
     // For instance, get the download URL: https://firebasestorage.googleapis.com/...
         task.snapshot.ref.getDownloadURL().then(function(downloadURL) {
-        console.log('File available at', downloadURL);
+        $('#file-link').html(`Your file is available
+          <a href="${downloadURL}" target="_blank">here</a>.`);
     });
   });
 }); 
