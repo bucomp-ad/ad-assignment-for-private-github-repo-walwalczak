@@ -75,7 +75,7 @@ function getItem(itemname){
     type: 'GET',
     url: `/item/${itemname}`,
     success: function(data){
-        let item = `<li>${data.name} price: ${data.price}</li>`;
+        let item = `<li>${data.name}, price: ${data.price}</li>`;
         $('#show-item').html(item);
   }
 });

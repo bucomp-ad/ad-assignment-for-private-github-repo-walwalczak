@@ -59,8 +59,8 @@ window.addEventListener('load', function () {
       // Update the login state indicators.
       document.getElementById('sign-out').hidden = true;
       document.getElementById('login-info').hidden = true;
-      if (itemCards){
-        itemCards.hidden = true;
+      if (document.getElementById('item-cards')){
+        document.getElementById('item-cards').hidden = true;
       }
       // Clear the token cookie.
       document.cookie = "token=";
