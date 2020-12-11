@@ -55,6 +55,3 @@ class ItemList(Resource):
             return json_data, 201
         except:
             return {"message": "Unexpected error ocurred."}, 500
-
-
-        
