@@ -5,7 +5,7 @@ from trello import TrelloBoard
 from google.auth.transport import requests as google_requests
 import google.oauth2.id_token
 import requests
-
+from authenticate import check_token
 from requests import put, get, delete, post
 
 
@@ -28,7 +28,6 @@ def upload_file():
     error_message = None
     claims = None
     times = None
-    # print("id_token:" + id_token)
     if id_token:
         try:
             firebase_request_adapter = google_requests.Request()
@@ -49,6 +48,7 @@ def upload_file():
 
 
 @app.route('/trello')
+@check_token
 def create_board():
     # Verify Firebase auth.
     id_token = request.cookies.get("token")
