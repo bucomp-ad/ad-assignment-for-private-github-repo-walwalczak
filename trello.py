@@ -18,8 +18,6 @@ class TrelloBoard(Resource):
                 'prefs_permissionLevel':'public'
             }
             response = requests.post(url, params=query)
-            print(f'Response: {response.json()}')
             return response.json() 
         except:
             return {"message": "Unexpected error ocurred."}, 500
-        
