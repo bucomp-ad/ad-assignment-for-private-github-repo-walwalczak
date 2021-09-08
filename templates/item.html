@@ -1,0 +1,159 @@
+<div class="card-deck" id="item-cards">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Get items list</h5>
+              <div class="btn btn-primary" id="get-items-btn" style="margin-top: 20px;">GET</div>
+              <br>
+              <div id="show-items"></div>
+      </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Get item</h5>
+          <form>
+                <input type="text" class="form-control" placeholder="Enter item name" id="get-item-input">
+                <div class="btn btn-primary" id="get-item-btn" style="margin-top: 20px;">GET</div>
+                <br>
+                <div id="show-item"></div>
+            </form>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Delete item</h5>
+          <form>
+                <input type="text" class="form-control" placeholder="Enter item name" id="delete-item-input">
+                <div class="btn btn-primary" id="delete-item-btn" style="margin-top: 20px;">DELETE</div>
+                <br>
+                <div id="show-response"></div>
+            </form>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Post item</h5>
+          <form>
+                <input type="text" class="form-control" placeholder="Enter item name" id="post-item-name">
+                <br>
+                <input type="text" class="form-control" placeholder="Enter item price" id="post-item-price">
+                <div class="btn btn-primary" id="post-item-btn" style="margin-top: 20px;">POST</div>
+                <br>
+                <div id="show-new-item"></div>
+            </form>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Put item</h5>
+          <form>
+                <input type="text" class="form-control" placeholder="Enter item name" id="put-item-name">
+                <br>
+                <input type="text" class="form-control" placeholder="Enter item price" id="put-item-price">
+                <div class="btn btn-primary" id="put-item-btn" style="margin-top: 20px;">PUT</div>
+                <br>
+                <div id="show-put-item"></div>
+            </form>
+        </div>
+      </div>
+  </div>
+  <script>
+//GET Items list
+$("#get-items-btn").click(function(){
+    $.getJSON('/items', function(data) {
+        var itemsList = '';
+
+        $.each(data, function(key, value) {
+            itemsList += `<li>${value.name}, price: ${value.price}</li>`;
+        });
+        $('#show-items').html(itemsList);
+    });
+});
+
+//GET Item
+function getItem(itemname){
+  $.ajax({
+    type: 'GET',
+    url: `/item/${itemname}`,
+    success: function(data){
+        let item = `<li>${data.name}, price: ${data.price}</li>`;
+        $('#show-item').html(item);
+  }
+});
+}
+$("#get-item-btn").click(function(){
+  let name = document.getElementById("get-item-input").value
+  getItem(name)
+});
+
+//DEL Item
+function delItem(itemname){
+  $.ajax({
+    type: 'DELETE',
+    url: `/item/${itemname}`,
+    success: function(data){
+        let message = `<li>${data.message}</li>`;
+        $('#show-response').html(message);
+  }
+});
+}
+$("#delete-item-btn").click(function(){
+  let name = document.getElementById("delete-item-input").value
+  delItem(name)
+});
+
+//POST Item
+function postItem(itemname, itemprice){
+    item_price = itemprice
+  $.ajax({
+    type: 'POST',
+    url: `/item/${itemname}`,
+    data: JSON.stringify({price: item_price}),
+    contentType: "application/json; charset=utf-8",
+    dataType: 'json',
+    success: function(data){
+        $('#show-new-item').html(data.message);
+  },
+  error:function(error){
+    if(error.status==404) {
+        $('#show-new-item').html('Incorrect input. Fields cannot be left blank.');
+    } else {
+        $('#show-new-item').html('Incorrect input. Make sure item price is a number');
+    }
+  }
+});
+}
+$("#post-item-btn").click(function(){
+  let name = document.getElementById("post-item-name").value
+  let price = document.getElementById("post-item-price").value
+  postItem(name, price)
+});
+
+
+
+//PUT Item
+function putItem(itemname, itemprice){
+    item_price = itemprice
+  $.ajax({
+    type: 'PUT',
+    url: `/item/${itemname}`,
+    data: JSON.stringify({price: item_price}),
+    contentType: "application/json; charset=utf-8",
+    dataType: 'json',
+    success: function(data){
+        $('#show-put-item').html(data.message);
+  },
+  error:function(error){
+    if(error.status==404) {
+        $('#show-put-item').html('Incorrect input. Fields cannot be left blank.');
+    } else {
+        $('#show-put-item').html('Incorrect input. Make sure item price is a number');
+    }
+  }
+});
+}
+$("#put-item-btn").click(function(){
+  let name = document.getElementById("put-item-name").value
+  let price = document.getElementById("put-item-price").value
+  putItem(name, price)
+});
+  </script>

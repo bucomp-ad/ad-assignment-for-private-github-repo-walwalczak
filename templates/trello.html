@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+<head>
+  <title>Firestore Cloud Storage Example</title>
+  <script src="https://www.gstatic.com/firebasejs/7.18.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.8.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.18.0/firebase-analytics.js"></script>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+  <script src="https://www.gstatic.com/firebasejs/ui/4.5.0/firebase-ui-auth.js"></script>
+  <script src="https://code.jquery.com/jquery-3.x-git.min.js"></script>
+
+<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.5.0/firebase-ui-auth.css">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+</head>
+<body>
+{% include "navigation.html" ignore missing %}
+<!--end of Navigation bar-->
+
+    <div class="card" style="width: 36rem; margin:auto">
+        <div class="card-header">
+            <h5 class="card-title text-center">Create a board</h5>
+          </div>
+        <div class="card-body">
+            <form>
+                  <input type="text" class="form-control" placeholder="Board Name" id="board-name-input">
+                  <br>
+                  <div class="btn btn-primary" id="submit">Create</div>
+                  <div id="response"></div>
+              </form>
+        </div>
+      </div>
+
+   <script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-storage.js"></script>       
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyC1lWoEQGssAUgMOGXQPr-BudMpZEQE3xc",
+    authDomain: "nps-demo-app.firebaseapp.com",
+    databaseURL: "https://nps-demo-app.firebaseio.com",
+    projectId: "nps-demo-app",
+    storageBucket: "nps-demo-app.appspot.com",
+    messagingSenderId: "468425812899",
+    appId: "1:468425812899:web:cf670e802f13db00bec816",
+    measurementId: "G-D5W2BRF78P"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+
+   // Get a reference to the storage service, which is used to create references in your storage bucket
+   //var storage = firebase.storage();
+</script>
+<script src="{{ url_for('static', filename='trelloboard.js') }}"></script>
+<!-- Bootstrap JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+</body>
+</html>
